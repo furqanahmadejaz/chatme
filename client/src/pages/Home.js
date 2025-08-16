@@ -11,7 +11,7 @@ const Home = () => {
 
   const socketRef = useRef(null)
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000")
+    socketRef.current = io("https://chatme-1-jqgl.onrender.com")
 
     socketRef.current.on("connect", () => {
       console.log("Connected to the server")
