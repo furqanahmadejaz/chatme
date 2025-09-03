@@ -11,7 +11,7 @@ const useSignup = () => {
         setIsLoading(true)
         setError(false)
 
-        const response = await fetch("http://localhost:4000/api/user/signup", {
+        const response = await fetch("https://chatme-1-jqgl.onrender.com/api/user/signup", {
           method: "POST",
           body: JSON.stringify({ username,email, password }),
           headers: {
