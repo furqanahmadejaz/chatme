@@ -343,6 +343,24 @@ body {
 .messages-container::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+.logout-btn {
+  margin-left: auto;  /* pushes it to the far right */
+  padding: 8px 14px;
+  background: #4e46e5d7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(68, 71, 239, 0.4);
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -390,5 +408,98 @@ body {
   .username-input,
   .username-btn {
     padding: 14px 18px;
+  }
+}
+
+
+/* Login Signup Css */
+/* ===== Auth Forms (Login & Signup) ===== */
+.user-form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-form label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.user-form input {
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.user-form input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.user-form button {
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  transition: all 0.2s ease;
+}
+
+.user-form button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+}
+
+.user-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  margin-top: -10px;
+}
+
+/* Center form vertically */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  .user-form {
+    padding: 30px 20px;
+    border-radius: 16px;
+  }
+
+  .user-form input,
+  .user-form button {
+    font-size: 14px;
+    padding: 12px 14px;
   }
 }

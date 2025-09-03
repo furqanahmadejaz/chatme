@@ -2,33 +2,67 @@
 
 import { io } from "socket.io-client"
 import { useRef, useEffect, useState } from "react"
-
+import { useAuthContext } from "../hooks/useAuthContext"
+import {useLogout} from "../hooks/useLogout";
 const Home = () => {
+  // Scroll to bottom whenever messages change
+  const messagesEndRef = useRef(null);
+  const {logout} = useLogout();
+  const handleLogout = () => {
+    logout();
+  }
+  const { user } = useAuthContext();
   const [messageText, setMessageText] = useState("")
   const [messages, setMessages] = useState([])
-  const [username, setUsername] = useState("")
-  const [tempUsername, setTempUsername] = useState("")
 
-  const socketRef = useRef(null)
   useEffect(() => {
-    socketRef.current = io("https://chatme-1-jqgl.onrender.com")
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
+  // fetch previous messages from the server
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/api/messages");
+      const data = await response.json();
+
+      setMessages(data.reverse());
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+  const socketRef = useRef(null)
+
+  
+  useEffect(() => {
+    socketRef.current = io("http://localhost:4000");
+    
+    
     socketRef.current.on("connect", () => {
       console.log("Connected to the server")
     })
-
+    fetchMessages();
     socketRef.current.on("message", (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg])
     })
+    
 
     return () => {
       socketRef.current.disconnect()
     }
   }, [])
 
+  if (!user) {
+    return null;             //return if not loggen in
+  }
+
   const handleClick = () => {
     if (messageText.trim() !== "") {
-      socketRef.current.emit("message", { messageText, username })
+      const message = {
+        content: messageText,
+        senderid: user.user._id,
+        chatid: null
+      }
+      socketRef.current.emit("message", message)
       setMessageText("")
     }
   }
@@ -44,41 +78,16 @@ const Home = () => {
     <div className="chat-container">
       <div className="chat-header">
         <h1 className="app-title">ChatMe</h1>
+        
         <div className="status-indicator online"></div>
+        
       </div>
-
-      {!username && (
-        <div className="username-setup">
-          <div className="welcome-card">
-            <h2 className="welcome-title">Welcome to ChatMe</h2>
-            <p className="welcome-subtitle">Enter your username to start chatting</p>
-            <div className="username-form">
-              <input
-                type="text"
-                className="username-input"
-                placeholder="Enter your username"
-                onChange={(e) => setTempUsername(e.target.value)}
-                value={tempUsername}
-                onKeyPress={(e) => e.key === "Enter" && setUsername(tempUsername)}
-              />
-              <button
-                className="username-btn"
-                onClick={() => setUsername(tempUsername)}
-                disabled={!tempUsername.trim()}
-              >
-                Join Chat
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {username && (
         <div className="chat-interface">
           <div className="chat-header-user">
             <div className="user-info">
-              <div className="user-avatar">{username.charAt(0).toUpperCase()}</div>
-              <span className="username-display">Welcome, {username}!</span>
+              <div className="user-avatar">{user.user.username.charAt(0).toUpperCase()}</div>
+              <span className="username-display">Welcome, {user.user.username}!</span>
+              <button onClick={handleLogout} className="logout-btn">Logout</button>
             </div>
           </div>
 
@@ -86,23 +95,24 @@ const Home = () => {
             <ul className="messages-list" id="messagesList">
               {messages &&
                 messages.map((msg, idx) =>
-                  msg.username === username ? (
+                  msg.senderid.email === user.user.email ? (
                     <li key={idx} className="message-item my-message">
                       <div className="message-bubble">
-                        <div className="message-content">{msg.messageText}</div>
+                        <div className="message-content">{msg.content}</div>
                         <div className="message-time">You</div>
                       </div>
                     </li>
                   ) : (
                     <li key={idx} className="message-item other-message">
                       <div className="message-bubble">
-                        <div className="message-sender">{msg.username}</div>
-                        <div className="message-content">{msg.messageText}</div>
+                        <div className="message-sender">{msg.senderid.username}</div>
+                        <div className="message-content">{msg.content}</div>
                       </div>
                     </li>
                   ),
                 )}
             </ul>
+            <div ref={messagesEndRef}/>
           </div>
 
           <div className="message-input-container">
@@ -124,7 +134,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-      )}
     </div>
   )
 }
