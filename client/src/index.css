@@ -17,20 +17,7 @@ body {
   padding: 20px;
 }
 
-.chat-container {
-  width: 100%;
-  max-width: 800px;
-  height: 90vh;
-  max-height: 90vh;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+
 
 .chat-header {
   background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -227,6 +214,10 @@ body {
   padding: 12px 16px;
   border-radius: 18px;
   position: relative;
+  word-wrap: break-word;     /* old support */
+  overflow-wrap: break-word; /* modern browsers */
+  white-space: pre-wrap;     /* keep line breaks but wrap long text */
+  max-width: 100%;           /* don’t exceed container */
 }
 
 .my-message .message-bubble {
@@ -253,6 +244,9 @@ body {
   font-size: 15px;
   line-height: 1.4;
   word-wrap: break-word;
+  word-wrap: break-word;     /* old support */
+  overflow-wrap: break-word; /* modern browsers */
+  white-space: pre-wrap;     /* keep line breaks but wrap long text */
 }
 
 .message-time {
@@ -360,56 +354,22 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(68, 71, 239, 0.4);
 }
-
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-
-  .chat-container {
-    height: 95vh;
-    border-radius: 16px;
-  }
-
-  .chat-header,
-  .chat-header-user,
-  .message-input-container {
-    padding: 16px 20px;
-  }
-
-  .messages-container {
-    padding: 16px 20px;
-  }
-
-  .welcome-card {
-    padding: 30px 20px;
-  }
-
-  .message-bubble {
-    max-width: 85%;
-  }
+.chat-container {
+  width: 50vw;
+  height: 90vh;
+  max-height: 90vh;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-@media (max-width: 480px) {
-  .app-title {
-    font-size: 20px;
-  }
 
-  .welcome-title {
-    font-size: 24px;
-  }
-
-  .username-form {
-    gap: 12px;
-  }
-
-  .username-input,
-  .username-btn {
-    padding: 14px 18px;
-  }
-}
 
 
 /* Login Signup Css */
@@ -491,12 +451,79 @@ body {
 }
 
 /* Responsive tweaks */
+/* Responsive Design */
+/* Laptops & desktops (>=1024px) */
+@media (min-width: 1024px) {
+  .chat-container {
+    max-width: 1200px; /* wider on laptop/desktop */
+  }
+}
+
+/* Large desktops (>=1440px) */
+@media (min-width: 1440px) {
+  .chat-container {
+    max-width: 1400px;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .chat-container {
+    width: 90vw;
+    height: 95vh;
+    border-radius: 16px;
+  }
+
+  .chat-header,
+  .chat-header-user,
+  .message-input-container {
+    padding: 16px 20px;
+  }
+
+  .messages-container {
+    padding: 16px 20px;
+  }
+
+  .welcome-card {
+    padding: 30px 20px;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+}
+
 @media (max-width: 480px) {
+  .chat-container {
+    width: 90vw;
+    height: 95vh;
+    border-radius: 12px;
+  }
+  .message-bubble {
+    max-width: 85%;
+  }
+  .app-title {
+    font-size: 20px;
+  }
+
+  .welcome-title {
+    font-size: 24px;
+  }
+
+  .username-form {
+    gap: 12px;
+  }
   .user-form {
     padding: 30px 20px;
     border-radius: 16px;
   }
 
+  .username-input,
+  .username-btn {
+    padding: 14px 18px;
+  }
   .user-form input,
   .user-form button {
     font-size: 14px;
