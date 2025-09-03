@@ -10,7 +10,7 @@ const messageRoutes = require('./routes/messageRoutes');
 
 const UserModel = require('./models/UserModel');
 
-const {User, Chat, Message} = UserModel;
+const {Message} = UserModel;
 
 const app = express();
 app.use(express.json());

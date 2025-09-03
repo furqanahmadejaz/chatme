@@ -22,7 +22,7 @@ const Home = () => {
   // fetch previous messages from the server
   const fetchMessages = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/messages");
+      const response = await fetch("https://chatme-1-jqgl.onrender.com/api/messages");
       const data = await response.json();
 
       setMessages(data.reverse());
@@ -34,7 +34,7 @@ const Home = () => {
 
   
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000");
+    socketRef.current = io("https://chatme-1-jqgl.onrender.com");
     
     
     socketRef.current.on("connect", () => {
